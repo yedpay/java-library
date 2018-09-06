@@ -1,9 +1,6 @@
 language: java
 sudo: false
 
-before_install:
-  - cd java
-
 # Tell Travis CI to monitor only 'master' branch
 branches:
   only: master
