@@ -1,2 +1,6 @@
 language: java
-jdk: oraclejdk8
+sudo: false
+
+# Tell Travis CI to monitor only 'master' branch
+branches:
+  only: master
