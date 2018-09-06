@@ -1,6 +1,8 @@
 language: java
 sudo: false
 
+mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
 # Tell Travis CI to monitor only 'master' branch
 branches:
   only: master
