@@ -7,68 +7,28 @@ package Yedpay;
 
 import Yedpay.Response.Response;
 import Yedpay.Response.Error;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 /**
  *
  * @author Terrie
  */
-public class Client {
+public abstract class Client {
     private int gateway = 1;
     private String returnUrl = null;
     private String notifyUrl = null;
     private String currency;
     private String wallet;
     private HttpTask httpTask;
-   
-    public Client() {
-    }
-    
-    public Client(String environment, String accessToken) throws Exception {
-        if (environment != null && accessToken != null) {
-            try {
-                httpTask = new HttpTask(environment, accessToken);
-            } catch (Exception ex) {
-                throw new Exception("Init HttpTask fail");
-            }
-        }
-        this.wallet = Constant.WALLET_HK;
-        this.currency = Constant.CURRENCY_HKD;
-        this.gateway = Constant.INDEX_GATEWAY_ALIPAY;
-    }
-
-    // precreate
-    public Response precreate(String storeId, float amount, HashMap<String, String> extraParam) {
-        String path = String.format(Constant.PATH_PRECREATE, storeId);
-        try {
-            HashMap<String, String> parameter = new HashMap<>();
-            parameter.put("gateway_id", getGateway() + "");
-            parameter.put("currency", getCurrency());
-            parameter.put("wallet", getWallet());
-            parameter.put("amount", amount + "");
-
-            if (extraParam != null) {
-                for (Map.Entry<String, String> data : extraParam.entrySet()) {
-                    parameter.put(data.getKey(), data.getValue());
-                }
-            }
-            if (this.getNotifyUrl() != null) parameter.put("notify_url", this.getNotifyUrl());
-            if (this.getReturnUrl() != null) parameter.put("return_url", this.getReturnUrl());
-
-            Response result = httpTask.execute(path, parameter);
-            return result;
-        } catch (Exception e) {
-            return new Error("0", e.getMessage());
-        }
-    }
     
     // refund
     public Response refund(String transactionId) {
         try {
             String path = String.format(Constant.PATH_REFUND, transactionId);
 
-            Response result = httpTask.execute(path, null);
+            Response result = httpTask.execute(Constant.PUT, path, null);
             return result;
         } catch (Exception e) {
             return new Error("0", e.getMessage());
@@ -144,4 +104,41 @@ public class Client {
     public String getNotifyUrl() {
         return this.notifyUrl;
     }
+    
+    public void setHttpTask(HttpTask httpTask) {
+        this.httpTask = httpTask;
+    }
+    
+    public HttpTask getHttpTask() {
+        return this.httpTask;
+    }
+    
+    public static boolean verifySign(String json, String signKey, String[] unsetFields) throws Exception {
+        JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
+        if (!jsonObject.has("sign") || jsonObject.get("sign").getClass() == JsonNull.class) {
+            throw new Exception("No signature detected");
+        }
+        if (!jsonObject.has("sign_type") || jsonObject.get("sign_type").getClass() == JsonNull.class) {
+            throw new Exception("No sign type detected");
+        }
+        String signature = jsonObject.get("sign").getAsString();
+        String signType = jsonObject.get("sign_type").getAsString();
+        
+        jsonObject.remove("sign");
+        jsonObject.remove("sign_type");
+        for (int i = 0; i < unsetFields.length; i++) {
+            jsonObject.remove(unsetFields[i]);
+        }
+        
+        String httpString = HttpTask.jsonToHttpString(jsonObject);
+        
+        switch (signType) {
+            case "HMAC_SHA256":
+                String result = Helper.hmacSha256(httpString, signKey);
+                return result.equals(signature.toLowerCase());
+        }
+        
+        return false;
+    }
+
 }

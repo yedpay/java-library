@@ -5,7 +5,7 @@
  */
 package example;
 
-import Yedpay.Client;
+import Yedpay.AccessTokenClient;
 import Yedpay.Constant;
 import Yedpay.Response.Error;
 import Yedpay.Response.Response;
@@ -16,9 +16,9 @@ public class ExamplePrecreateClient {
     
     public static void main(String[] args) {
         // mandatory parameters
-        String storeId = "8X4LZW2X";
+        String storeId = "Z6YGJP61"; // input store id here 
         float amount = (float) 0.1;
-        String ACCESS_TOKEN = "J84OFPAN";
+        String ACCESS_TOKEN = "J84OFPAN"; //input access token here
         
         // optional parameter: extraParam (HashMap)
         HashMap<String, String> extraParam = new HashMap();
@@ -27,7 +27,7 @@ public class ExamplePrecreateClient {
         
         try {
             // Create instance of Client
-            Client client = new Client(Constant.STAGING, ACCESS_TOKEN);
+            AccessTokenClient client = new AccessTokenClient(Constant.STAGING, ACCESS_TOKEN);
             
             // (Optional) Setting Transaction parameters
             // changing transaction currency (default: HKD)
@@ -36,6 +36,10 @@ public class ExamplePrecreateClient {
             client.setWallet(Constant.INDEX_WALLET_CN);
             // changing gateway (default: ALIPAY)
             client.setGateway(Constant.INDEX_GATEWAY_ALIPAY_ONLINE);
+            
+            // uncomment if online gateway selected
+//            client.setNotifyUrl("");
+//            client.setReturnUrl("");
             
             String returnMessage = "";
             // Sending Precreate Request

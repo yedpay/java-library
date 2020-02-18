@@ -5,34 +5,26 @@
  */
 package example;
 
-import Yedpay.AccessTokenClient;
+import Yedpay.ApiKeyClient;
 import Yedpay.Constant;
 import Yedpay.Response.Response;
 import Yedpay.Response.Error;
 import Yedpay.Response.Success;
 
-public class ExampleRefundClient {
+public class ExampleRefundOnlinePaymentClient {
     
     public static void main(String[] args) {
         // mandatory parameters
-        String ACCESS_TOKEN = "8X4Z6Y4"; //Input Access Token here
-        String transactionId = "GPJLL2X"; // input  transaction_id here
+        String API_KEY = ""; //Input API Key here
+        String customId = ""; //Input custom id here
         
         try {
             // Create instance of Client
-            AccessTokenClient client = new AccessTokenClient(Constant.STAGING, ACCESS_TOKEN);
-            
-            // (Optional) Setting Transaction parameters
-            // changing transaction currency (default: HKD)
-            client.setCurrency(Constant.INDEX_CURRENCY_HKD);
-            // changing alipay wallet type (default: HK)
-            client.setWallet(Constant.INDEX_WALLET_CN);
-            // changing gateway (default: ALIPAY_ONLINE)
-            client.setGateway(Constant.INDEX_GATEWAY_ALIPAY_ONLINE);
+            ApiKeyClient client = new ApiKeyClient(Constant.STAGING, API_KEY);
             
             String returnMessage = "";
             // Sending Refund Request
-            Response result = client.refund(transactionId);
+            Response result = client.refund(customId, null);
             if (result instanceof Success) {
                 returnMessage = ((Success) result).getData().toString();
             } else {

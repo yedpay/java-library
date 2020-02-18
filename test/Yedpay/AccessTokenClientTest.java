@@ -23,14 +23,14 @@ import org.mockito.MockitoAnnotations;
  *
  * @author Terrie
  */
-public class ClientTest {
+public class AccessTokenClientTest {
     private static String ACCESS_TOKEN;
     @InjectMocks
-    private static Client client;
+    private static AccessTokenClient client;
     @Mock
     private static HttpTask httpTaskMock;
     
-    public ClientTest() {
+    public AccessTokenClientTest() {
     }
     
     @Before
@@ -41,7 +41,7 @@ public class ClientTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjkzN2ZjMWNhYWVmNTcyZTM1N2Q5ODQ0YmIxNzNjODYzOGRjZWY3MjM3YTEwOTc3NmZiOGZhMmZkZmRhOTZmMDhhOGZjZDFmNWY3NDlhNDA1In0.eyJhdWQiOiIxIiwianRpIjoiOTM3ZmMxY2FhZWY1NzJlMzU3ZDk4NDRiYjE3M2M4NjM4ZGNlZjcyMzdhMTA5Nzc2ZmI4ZmEyZmRmZGE5NmYwOGE4ZmNkMWY1Zjc0OWE0MDUiLCJpYXQiOjE1MzU0MjQwMTYsIm5iZiI6MTUzNTQyNDAxNiwiZXhwIjoxNTQzMjAwMDE2LCJzdWIiOiI0MTAiLCJzY29wZXMiOltdfQ.hs7pZM59zOg6S9ComhWTsmir_EpXX76iwvBWjAWasxCANtxvn8m5LXDOIOabUQd6K98pC_49UJbMEA9x6EIyT1DPc5Tt8sepcSOneAD1eH375IfSZr287ujrWEHY9oZEZmYvdpQl0c44G6f4v8XaV60_paDWsnHh9wuigAB1A8hZoZhLXFVbvOT7hgAz13tDxCJfVLTdgUymJdk7YpFkUejaQ9_M2fiKwceLwTrJ338D_HVjOArZmg_ZkbssWBVm1nhpAUoqJsUHTBuOqoFq9Dc5Nmzv2rV-oAgh50AlN4OHgs90yhswpGE_1csrk-JqZolrbuDbo6so0tYdKdHgX6E0CVyxchjPHSVotX0C7nCxToEuqM6GTtjjuNJAN7j6bWHwvVVGFx6IbV-IJO45RxZKkM4gA-Qggnii1o_FIu-M2ZUYBZOaXfQWuYQW5gWzLqPMm3Tus0P_2ddq0iNZbQ37iCbuEavgqsiXOl9lGwNLxcHD_CIguMArCu8YudJpZnyxq2Lkm8W9taKCnekCrYQcxawoqyEYBq7oUwbEC8cO5sz5DY-sOUgoXaEULxvJdUoRUFv3O-Pe5rp478_SxJlDUhY1SuMMvy6TNXOsFPmBbmDq5RG5SCzGNMPzsKjoQREPSCTuPCPpA7LYEWAA8kwjfr3oVmWr1277VcaSFsE";
-        client = new Client("staging", ACCESS_TOKEN);
+        client = new AccessTokenClient("staging", ACCESS_TOKEN);
         httpTaskMock = Mockito.mock(HttpTask.class);
     }
     
@@ -56,14 +56,14 @@ public class ClientTest {
      * Test of precreate method, of class Client.
      */
     @Test
-    public void testPrecreate() {
+    public void testPrecreate() throws Exception {
         String storeId = "123";
         float amount = 0.0F;
         HashMap<String, String> extraParam = new HashMap();
         extraParam.put("customer_name", "YedPay");
         extraParam.put("phone", "1234567890");
         
-        when (httpTaskMock.execute(Mockito.any(String.class), Mockito.any(HashMap.class))).thenReturn(new Error("0"));
+        when (httpTaskMock.execute(Mockito.any(String.class), Mockito.any(String.class), Mockito.any(HashMap.class))).thenReturn(new Error("0"));
         Response result = client.precreate(storeId, amount, extraParam);
         
         assertTrue(result instanceof Error);
@@ -76,7 +76,7 @@ public class ClientTest {
     public void testRefund() {
         String transactionId = "";
         
-        when (httpTaskMock.execute(Mockito.any(String.class), Mockito.any(HashMap.class))).thenReturn(new Error("0"));
+        when (httpTaskMock.execute(Mockito.any(String.class), Mockito.any(String.class), Mockito.any(HashMap.class))).thenReturn(new Error("0"));
         Response result = client.refund(transactionId);
         
         assertTrue(result instanceof Error);
