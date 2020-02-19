@@ -56,11 +56,11 @@ public class ApiKeyClientTest {
      * Test of refund method, of class Client.
      */
     @Test
-    public void testRefund() {
-        String transactionId = "";
+    public void testRefund() throws Exception {
+        String customId = "";
         
         when (httpTaskMock.execute(Mockito.any(String.class), Mockito.any(String.class), Mockito.any(HashMap.class))).thenReturn(new Yedpay.Response.Error("0"));
-        Response result = client.refund(transactionId);
+        Response result = client.refundByCustomId(customId, null);
         
         assertTrue(result instanceof Yedpay.Response.Error);
     }

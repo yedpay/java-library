@@ -58,7 +58,7 @@ public class AccessTokenClientTest {
     @Test
     public void testPrecreate() throws Exception {
         String storeId = "123";
-        float amount = 0.0F;
+        double amount = 0.01d;
         HashMap<String, String> extraParam = new HashMap();
         extraParam.put("customer_name", "YedPay");
         extraParam.put("phone", "1234567890");
@@ -77,7 +77,7 @@ public class AccessTokenClientTest {
         String transactionId = "";
         
         when (httpTaskMock.execute(Mockito.any(String.class), Mockito.any(String.class), Mockito.any(HashMap.class))).thenReturn(new Error("0"));
-        Response result = client.refund(transactionId);
+        Response result = client.refund(transactionId, null);
         
         assertTrue(result instanceof Error);
     }

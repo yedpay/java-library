@@ -24,7 +24,7 @@ public class ExampleRefundOnlinePaymentClient {
             
             String returnMessage = "";
             // Sending Refund Request
-            Response result = client.refund(customId, null);
+            Response result = client.refundByCustomId(customId, null);
             if (result instanceof Success) {
                 returnMessage = ((Success) result).getData().toString();
             } else {

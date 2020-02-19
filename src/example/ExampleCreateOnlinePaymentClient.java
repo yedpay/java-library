@@ -19,6 +19,8 @@ public class ExampleCreateOnlinePaymentClient {
         // mandatory parameters
         String API_KEY = ""; //input api key here
         double amount = 0.1d;
+        String customId = "";
+        
         try {
             // Create instance of Client
             ApiKeyClient client = new ApiKeyClient(Constant.STAGING, API_KEY);
@@ -30,7 +32,7 @@ public class ExampleCreateOnlinePaymentClient {
             
             String returnMessage = "";
             // Sending Precreate Request
-            Response result = client.createOnlinePayment("kobe_javatest_4", amount);
+            Response result = client.createOnlinePayment(customId, amount);
             if (result instanceof Success) {
                 returnMessage = result.getResponseCode() + ":" + ((Success) result).getData();
             } else {

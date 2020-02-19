@@ -80,7 +80,7 @@ public class ApiKeyClient extends Client {
         }
     }
     
-    public Response refund(String customId, String refundReason) throws Exception {
+    public Response refundByCustomId(String customId, String refundReason) throws Exception {
         HttpTask httpTask = this.getHttpTask();
         if (httpTask == null) {
             throw new Exception("Httptask should not be null");

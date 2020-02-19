@@ -32,7 +32,7 @@ public class ExampleRefundClient {
             
             String returnMessage = "";
             // Sending Refund Request
-            Response result = client.refund(transactionId);
+            Response result = client.refund(transactionId, null);
             if (result instanceof Success) {
                 returnMessage = ((Success) result).getData().toString();
             } else {

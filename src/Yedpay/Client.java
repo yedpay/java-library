@@ -10,6 +10,7 @@ import Yedpay.Response.Error;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.util.HashMap;
 
 /**
  *
@@ -24,11 +25,15 @@ public abstract class Client {
     private HttpTask httpTask;
     
     // refund
-    public Response refund(String transactionId) {
+    public Response refund(String transactionId, String refundReason) {
         try {
             String path = String.format(Constant.PATH_REFUND, transactionId);
-
-            Response result = httpTask.execute(Constant.PUT, path, null);
+            HashMap<String, String> parameter = new HashMap<String, String>();
+            if (refundReason != null && !refundReason.equals("")) {
+                parameter.put("refund_reason",  refundReason);
+            }
+            
+            Response result = httpTask.execute(Constant.POST, path, parameter);
             return result;
         } catch (Exception e) {
             return new Error("0", e.getMessage());

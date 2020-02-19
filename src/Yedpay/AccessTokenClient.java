@@ -38,7 +38,7 @@ public class AccessTokenClient extends Client {
     }
 
     // precreate
-    public Response precreate(String storeId, float amount, HashMap<String, String> extraParam) throws Exception {
+    public Response precreate(String storeId, double amount, HashMap<String, String> extraParam) throws Exception {
         HttpTask httpTask = this.getHttpTask();
         if (httpTask == null) {
             throw new Exception("Httptask should not be null");
