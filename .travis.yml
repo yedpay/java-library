@@ -5,5 +5,8 @@ sudo: false
 branches:
   only: master
   
+before_script:
+  - sudo apt-get install ant-optional
+  
 after_success:
   - mvn clean cobertura:cobertura org.eluder.coveralls:coveralls-maven-plugin:report
