@@ -90,10 +90,18 @@ public class HttpTask {
             rd.close();
             
             JSONObject json = new JSONObject(response.toString());
-
-            return new Success(responseCode + "", json);
+            if (json.has("success")) {
+                return new Success(responseCode + "", json);
+            } else {
+                if (json.has("message")) {
+                    return new Error(responseCode + "", json.getString("message"));
+                } else {
+                    return new Error(responseCode + "", responseMessage);
+                }
+            }
         } catch (Exception e) {
-            return new Error(responseCode + "");
+            e.printStackTrace();
+            return new Error(responseCode + "", e.getMessage());
         } finally {
             if (connection != null) {
                 connection.disconnect();

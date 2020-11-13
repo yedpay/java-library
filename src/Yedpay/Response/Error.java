@@ -19,9 +19,9 @@ public class Error extends Response {
     public Error(String responseCode) {
         super(responseCode);
         switch (responseCode) {
-            case "400":
-                errorMessage = "Insufficient Funds to refund this Transaction";
-                break;
+//            case "400":
+//                errorMessage = "Insufficient Funds to refund this Transaction";
+//                break;
             case "401":
                 errorMessage = "Unauthorized";
                 break;

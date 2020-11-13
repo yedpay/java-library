@@ -28,18 +28,6 @@ public class ErrorTest {
     }
 
     /**
-     * Test of getErrorMessage400 method, of class Error.
-     */
-    @Test
-    public void testGetErrorMessage400() {
-        Error instance = new Error("400");
-        String expResult = "Insufficient Funds to refund this Transaction";
-        String result = instance.getErrorMessage();
-        assertEquals(expResult, result);
-    }
-    
-
-    /**
      * Test of getErrorMessage401 method, of class Error.
      */
     @Test
